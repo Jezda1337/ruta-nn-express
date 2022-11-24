@@ -1,29 +1,26 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const nodemailer = require("nodemailer");
-const path = require("path");
 
-dotenv.config();
+dotenv.config(); // this have to be initialized beofer anything else
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(express.static(process.env.FRONT_END_PATH));
 
 const handleForm = async (body) => {
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    // port: 587,
-    port: 465,
+    port: 465, // or 587
     secure: true, // true for 465, false for other ports
     auth: {
-      user: process.env.USER_EMAIL_TEST,
-      pass: process.env.USER_EMAIL_PASS_TEST, // new generated pass from googpe-apps
+      user: process.env.USER_EMAIL,
+      pass: process.env.USER_PASS, // new generated pass from googpe-apps
     },
   });
 
   await transporter.sendMail({
     from: `||${body.name}||`,
-    to: process.env.TO_EMAIL_TEST, // list of receivers
+    to: process.env.TO_EMAIL, // list of receivers
     subject: `${body.email} ${body.name}`, // Subject line
     text: ``, // plain text body
     html: `
